@@ -9,10 +9,10 @@ import javax.persistence.Persistence;
 import interfaces.Iproducto;
 import model.TblProductocl3;
 
-public class ClassProductoImp implements Iproducto{
+public  class ClassProductoImp implements Iproducto{
 	
 
-    @Override
+    
     public void registrarproducto(TblProductocl3 producto) {
     	EntityManagerFactory fabr=Persistence.createEntityManagerFactory("LPII_CL3_KevinRosasBaldeon");
 		EntityManager em=fabr.createEntityManager();
@@ -33,9 +33,50 @@ public class ClassProductoImp implements Iproducto{
 		em.close();
 		return Listado;
     }
+    
+    @Override
+    public void Actualizarproducto(TblProductocl3 producto) {
+		// TODO Auto-generated method stub
+		EntityManagerFactory fabr = Persistence.createEntityManagerFactory("LPII_CL3_KevinRosasBaldeon");
+		EntityManager em = fabr.createEntityManager();
+		em.getTransaction().begin();
+		em.merge(producto);
+		em.getTransaction().commit();
+		em.close();
+		
+	}
+    
+    @Override
+    public void EliminarProdu(TblProductocl3 producto) {
+		// TODO Auto-generated method stub
+		EntityManagerFactory fabr = Persistence.createEntityManagerFactory("LPII_CL3_KevinRosasBaldeon");
+		EntityManager em = fabr.createEntityManager();
+		em.getTransaction().begin();
+		TblProductocl3 elim = em.merge(producto);
+		em.remove(elim);
+		System.out.println("Cliente eliminado de la base de datos");
+		em.getTransaction().commit();
+		em.close();
+		
+	}
+    
+    @Override
+    public TblProductocl3 Buscarproducto(TblProductocl3 producto) {
+		//establecemos la conexion con la unidad de persistencia..
+		EntityManagerFactory fabr=Persistence.createEntityManagerFactory("LPII_CL3_KevinRosasBaldeon");
+		//gestionar las entidads
+		EntityManager em=fabr.createEntityManager();
+		//iniciamos la transaccion
+		em.getTransaction().begin();
+		//recuperamos el codigo a buscar
+		TblProductocl3 busproducto=em.find(TblProductocl3.class,producto.getIdproductoscl3());
+		//confirmamos 
+		em.getTransaction().commit();
+		//cerramos
+		em.close();
+		return busproducto;
+	}
 
-    // Método para cerrar el EntityManagerFactory al finalizar la aplicación
-   
-        
+	
     }
 

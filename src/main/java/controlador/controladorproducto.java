@@ -30,16 +30,46 @@ public class controladorproducto extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		TblProductocl3 productos= new TblProductocl3();
+		TblProductocl3 producto= new TblProductocl3();
 		ClassProductoImp crud= new ClassProductoImp();
-		List<TblProductocl3> Listado = crud.Listadoproducto();
 		
+	
 		
-		request.setAttribute("listadoproducto",Listado);
-		
-		request.getRequestDispatcher("/Listado.jsp").forward(request, response);
-		
-		
+		String accion=request.getParameter("accion");
+		if (accion !=null){
+			switch(accion){
+			case"modificar":
+				int codigo=Integer.parseInt(request.getParameter("codigo"));
+				
+				producto.setIdproductoscl3(codigo);
+				TblProductocl3 buscarcod=crud.Buscarproducto(producto);
+				request.setAttribute("codigo",buscarcod.getIdproductoscl3());
+				request.setAttribute("nombre",buscarcod.getNombrecl3());
+				request.setAttribute("preciocomp", buscarcod.getPreciocompcl3());
+				request.setAttribute("precioven", buscarcod.getPrecioventacl3());
+				request.setAttribute("estado",buscarcod.getEstadocl3());
+				request.setAttribute("descrip", buscarcod.getDescripcl3());
+				request.getRequestDispatcher("/formActualizar.jsp").forward(request,response);
+				break;
+				
+			case "Eliminar":
+				int codeeli = Integer.parseInt(request.getParameter("codigo"));
+				producto.setIdproductoscl3(codeeli);
+				crud.EliminarProdu(producto);
+				List<TblProductocl3> listado = crud.Listadoproducto();
+				request.setAttribute("listadoproductos", listado);
+				request.getRequestDispatcher("/RegistrarProducto.jsp").forward(request, response);
+				break;
+				
+			case "Listar":
+				List<TblProductocl3> listadoProducto=crud.Listadoproducto();
+				request.setAttribute("listadoproductos", listadoProducto);
+				request.getRequestDispatcher("/FormRegistrarProducto.jsp").forward(request, response);
+				break;
+			}
+			
+		}
+				
 	}
 
 	/**
@@ -47,6 +77,7 @@ public class controladorproducto extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String codigo = request.getParameter("codigo");
 		String nombre = request.getParameter("nombre");
 	    double precioCompra = Double.parseDouble(request.getParameter("preciocomp"));
 	    double precioVenta = Double.parseDouble(request.getParameter("precioventa"));
@@ -54,6 +85,7 @@ public class controladorproducto extends HttpServlet {
 	    String descripcion = request.getParameter("descripcion");
 
 	    // Crear una instancia del producto
+	    List<TblProductocl3> listadoproducto = null;
 	    TblProductocl3 producto = new TblProductocl3();
 	    ClassProductoImp crud = new ClassProductoImp();
 	    
@@ -65,17 +97,25 @@ public class controladorproducto extends HttpServlet {
 	    producto.setDescripcl3(descripcion);
 
 	 
-	  
+	    if(codigo != null){
+			int cod = Integer.parseInt(codigo);
+			producto.setIdproductoscl3(cod);
+			crud.Actualizarproducto(producto);
+			listadoproducto = crud.Listadoproducto();
+		}else{
+			crud.registrarproducto(producto);
+			listadoproducto = crud.Listadoproducto();
+		}
+		
 
-	    // Registrar el producto en la base de datos
-	    crud.registrarproducto(producto);
-
-	    // Obtener la lista actualizada de productos y enviarla a Listado.jsp
-	    List<TblProductocl3> listadoproducto = crud.Listadoproducto();
+	   
 	    request.setAttribute("listadoproducto", listadoproducto);
 	    
 	    // Redireccionar a la vista de listado de productos
-	    request.getRequestDispatcher("/Listado.jsp").forward(request, response);
+	    request.getRequestDispatcher("/RegistrarProducto.jsp").forward(request, response);
+	    
+	    
+	    
 	}
 
 }
