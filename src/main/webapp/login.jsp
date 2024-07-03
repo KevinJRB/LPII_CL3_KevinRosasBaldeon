@@ -5,35 +5,31 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Login</title>
+<!-- Bootstrap CSS -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body bgcolor="#c5dec9" >
-<h1 align="center">Ingresar al sistema</h1>
- 
-<form   action="controladorusuario" method="post">
-<table   border="2"  align="center">
-
-
-
-<tr>
-<td>Usuario</td>
-<td><input type="text"  name="usuario"></td>
-</tr>
-
-<tr>
-<td>password</td>
-<td><input type="password"  name="password"></td>
-</tr>
-
-<tr>
-<td colspan="2"   align="center">
-
-<input type="submit" value="logear"
->
-
-</td>
-
-</tr>
-</table>
-</form>
+<body class="bg-light">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1 class="text-center mt-5">Ingresar al sistema</h1>
+            <form action="controladorusuario" method="post" class="mt-4">
+                <div class="form-group">
+                    <label for="usuario">Usuario</label>
+                    <input type="text" class="form-control" id="usuario" name="usuario">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Logear</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
